@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .data-boxes-container,
+  .keys-container {
+    display: flex;
+  }
+}

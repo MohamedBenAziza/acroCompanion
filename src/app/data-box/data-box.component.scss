@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  height: 120px;
+  .top {
+    height: 15px;
+    width: 100%;
+    background-color: var(--secondary-color);
+    .number {
+      height: 100%;
+      width: fit-content;
+      background-color: var(--primary-color);
+      display: grid;
+      place-items: center;
+      span {
+        font-size: 15px;
+        padding: 0px 5px;
+      }
+    }
+  }
+  .content {
+    flex: 1;
+    display: grid;
+    place-items: center;
+  }
+  .bottom {
+    height: 15px;
+    width: 100%;
+    background-color: var(--secondary-color);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    div {
+      border: 1px solid var(--primary-color);
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--third-color);
+  }
+}
+
+.selected {
+  background-color: greenyellow;
+}
