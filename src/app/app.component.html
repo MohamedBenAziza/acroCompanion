@@ -3,11 +3,27 @@
     @for (item of [1,2,3,4,5,6,7,8,9,10]; track $index) {
     <data-box [num]="item"></data-box>
     }
+    <div class="result-container">
+      <button mat-stroked-button aria-label="delete button">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <span>Total value: {{ value }}</span>
+    </div>
   </div>
 
-  <div class="keys-container">
-    @for (item of ['a','5','3.','--0','44/']; track $index) {
-    <key-box [key]="item"></key-box>
-    }
+  @if (dataService.keysAreShown | async) {
+  <div class="keys-bloc-container">
+    <key-bloc
+      title="front salto's"
+      [keys]="['a', '5', '3.', '--0', '44/']"
+    ></key-bloc>
+
+    <key-bloc
+      title="back salto's"
+      [keys]="['a', '5', '3.', '--0', '44/']"
+    ></key-bloc>
+
+    <key-bloc title="other" [keys]="['a', '5', '3.', '--0', '44/']"></key-bloc>
   </div>
+  }
 </div>

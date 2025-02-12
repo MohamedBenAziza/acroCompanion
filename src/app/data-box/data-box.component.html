@@ -1,4 +1,8 @@
-<div class="container" [ngClass]="{ selected: num === 1 }">
+<div
+  class="container"
+  [ngClass]="{ selected: (dataService.selectedBoxIndex | async) === num }"
+  (click)="handleClick()"
+>
   <div class="top">
     <div class="number">
       <span>

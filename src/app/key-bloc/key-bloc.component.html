@@ -1,0 +1,8 @@
+<div class="keys-bloc">
+  <span>{{ title }}</span>
+  <div class="keys-container">
+    @for (item of keys; track item) {
+    <key-box [key]="item"></key-box>
+    }
+  </div>
+</div>

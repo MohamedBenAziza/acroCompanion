@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
@@ -7,6 +7,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
   imports: [MatTooltipModule],
   templateUrl: "./key-box.component.html",
   styleUrl: "./key-box.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KeyBoxComponent {
   @Input() key!: string;
