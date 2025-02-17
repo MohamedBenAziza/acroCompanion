@@ -1,6 +1,6 @@
 <div class="container">
   <div class="data-boxes-container">
-    @for (item of [1,2,3,4,5,6,7,8,9,10]; track $index) {
+    @for (item of dataService.boxes; track item) {
     <data-box [num]="item"></data-box>
     }
     <div class="result-container">
@@ -15,15 +15,45 @@
   <div class="keys-bloc-container">
     <key-bloc
       title="front salto's"
-      [keys]="['a', '5', '3.', '--0', '44/']"
+      [keysValues]="[
+        ['.3', 5],
+        [',4', 3],
+        ['-<', 2],
+        ['--0', 7],
+        ['44/', 9]
+      ]"
     ></key-bloc>
 
     <key-bloc
       title="back salto's"
-      [keys]="['a', '5', '3.', '--0', '44/']"
+      [keysValues]="[
+        ['-0', 2],
+        ['-/', 1],
+        ['-1/', 3],
+        ['3.', 4],
+        ['4.', 4],
+        ['5.', 9],
+        ['6.', 10],
+        ['7.', 3],
+        ['8.', 2],
+        ['24/', 4],
+        ['44/', 6],
+        ['1-<', 3]
+      ]"
     ></key-bloc>
 
-    <key-bloc title="other" [keys]="['a', '5', '3.', '--0', '44/']"></key-bloc>
+    <key-bloc
+      title="other"
+      [keysValues]="[
+        ['(', 1],
+        ['H', 2],
+        ['F', 3],
+        ['A', 1],
+        ['-/', 5]
+      ]"
+    ></key-bloc>
   </div>
   }
+
+  {{ value }}
 </div>

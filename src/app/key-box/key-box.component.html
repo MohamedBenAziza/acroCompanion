@@ -1,4 +1,15 @@
-<div class="key" [matTooltip]="key">
+<div
+  class="key"
+  [ngClass]="{
+    selected:
+      dataService.dataMap.get((dataService.selectedBoxIndex$ | async)!)?.key ===
+        key &&
+      dataService.dataMap.get((dataService.selectedBoxIndex$ | async)!)
+        ?.value === value
+  }"
+  [matTooltip]="value | number"
+  (click)="handleClick()"
+>
   <span>
     {{ key }}
   </span>

@@ -10,5 +10,5 @@ import { KeyBoxComponent } from "../key-box/key-box.component";
 })
 export class KeyBlocComponent {
   @Input() title!: string;
-  @Input() keys: string[] = [];
+  @Input() keysValues: [string, number][] = [];
 }

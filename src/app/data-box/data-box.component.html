@@ -1,6 +1,6 @@
 <div
   class="container"
-  [ngClass]="{ selected: (dataService.selectedBoxIndex | async) === num }"
+  [ngClass]="{ selected: (dataService.selectedBoxIndex$ | async) === num }"
   (click)="handleClick()"
 >
   <div class="top">
@@ -10,10 +10,16 @@
       </span>
     </div>
   </div>
-  <div class="content"><p>select element</p></div>
+  <div class="content">
+    <p>{{ dataService.dataMap.get(num)?.key ?? "select element" }}</p>
+  </div>
   <div class="bottom">
     <div></div>
-    <div></div>
+    <div>
+      <span>
+        {{ dataService.dataMap.get(num)?.value }}
+      </span>
+    </div>
     <div></div>
     <div></div>
   </div>

@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 120px;
   height: 120px;
+  cursor: pointer;
   .top {
     height: 15px;
     width: 100%;
@@ -35,12 +36,11 @@
     }
   }
 
-  &:hover {
-    cursor: pointer;
+  &:not(.selected):hover {
     background-color: var(--third-color);
   }
 }
 
 .selected {
-  background-color: greenyellow;
+  background-color: var(--selected-data-color);
 }
