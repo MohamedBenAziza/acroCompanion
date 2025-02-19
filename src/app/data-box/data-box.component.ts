@@ -21,7 +21,7 @@ export class DataBoxComponent {
   dataService = inject(DataService);
 
   handleClick(): void {
-    this.dataService.keysAreShown.next(true);
+    this.dataService.setKeysAreShown(true);
     this.dataService.setSelectedBoxIndex(this.num);
   }
 }

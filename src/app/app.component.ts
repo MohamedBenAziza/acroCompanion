@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  OnDestroy,
   OnInit,
 } from "@angular/core";
 import { DataBoxComponent } from "./data-box/data-box.component";
@@ -11,20 +12,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { DataService } from "./data.service";
 import { CommonModule } from "@angular/common";
 import { KeyBlocComponent } from "./key-bloc/key-bloc.component";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import {
-  combineLatest,
-  concatMap,
-  exhaustMap,
-  map,
-  mergeMap,
-  of,
-  Subject,
-  switchMap,
-  takeUntil,
-  tap,
-  withLatestFrom,
-} from "rxjs";
+import { mergeMap, of, Subject, takeUntil, withLatestFrom } from "rxjs";
 
 @Component({
   selector: "app-root",
@@ -40,11 +28,10 @@ import {
   styleUrl: "./app.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   dataService = inject(DataService);
   cdr = inject(ChangeDetectorRef);
 
-  value = 0;
   private destroyed$ = new Subject<void>();
 
   ngOnInit(): void {
@@ -63,11 +50,31 @@ export class AppComponent implements OnInit {
       )
       .subscribe(({ keyValue, index }) => {
         this.dataService.dataMap.set(index, keyValue);
-        if (index < this.dataService.boxes.length) {
-          this.dataService.setSelectedBoxIndex(index + 1);
+
+        const totalScore = Array.from(this.dataService.dataMap.values()).reduce(
+          (acc, element) => acc + element.value,
+          0
+        );
+
+        this.dataService.setTotalScore(parseFloat(totalScore.toFixed(2)));
+
+        this.dataService.setSelectedBoxIndex(
+          index < this.dataService.boxes.length ? index + 1 : index
+        );
+      });
+
+    this.dataService.selectedBoxIndex$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((index) => {
+        if (this.dataService.dataMap.has(index)) {
+          const keyValue = this.dataService.dataMap.get(index);
+          if (keyValue) {
+            this.dataService.setAssignedKey(keyValue.key + keyValue.value);
+          }
         } else {
-          this.dataService.setSelectedBoxIndex(index);
+          this.dataService.setAssignedKey(null);
         }
+        this.cdr.detectChanges();
       });
   }
 

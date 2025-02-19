@@ -6,7 +6,9 @@ import { BehaviorSubject, Subject } from "rxjs";
 })
 export class DataService {
   boxes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  keysAreShown = new BehaviorSubject<boolean>(false);
+
+  private _keysAreShown = new BehaviorSubject<boolean>(false);
+  keysAreShown$ = this._keysAreShown.asObservable();
 
   private _selectedBoxIndex = new Subject<number>();
   selectedBoxIndex$ = this._selectedBoxIndex.asObservable();
@@ -14,7 +16,17 @@ export class DataService {
   private _selectedkeyValue = new Subject<{ key: string; value: number }>();
   selectedkeyValue$ = this._selectedkeyValue.asObservable();
 
+  private _assignedkey = new Subject<string | null>();
+  assignedkey$ = this._assignedkey.asObservable();
+
+  private _totalScore = new BehaviorSubject<number>(0);
+  totalScore$ = this._totalScore.asObservable();
+
   dataMap = new Map<number, { key: string; value: number }>([]);
+
+  setKeysAreShown(value: boolean): void {
+    this._keysAreShown.next(value);
+  }
 
   setSelectedBoxIndex(index: number): void {
     this._selectedBoxIndex.next(index);
@@ -22,5 +34,13 @@ export class DataService {
 
   setSelectedKeyValue(key: string, value: number): void {
     this._selectedkeyValue.next({ key, value });
+  }
+
+  setAssignedKey(assignedKey: string | null): void {
+    this._assignedkey.next(assignedKey);
+  }
+
+  setTotalScore(value: number): void {
+    this._totalScore.next(value);
   }
 }
