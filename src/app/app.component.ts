@@ -40,16 +40,19 @@ export class AppComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$),
         withLatestFrom(this.dataService.selectedBoxIndex$),
         mergeMap(([keyValue, selectedBoxIndex]) => {
-          console.log("selectedKeyValue changed:", keyValue);
-          console.log("Latest selectedBoxIndex:", selectedBoxIndex);
           return of({
             index: selectedBoxIndex,
-            keyValue: keyValue,
+            key: keyValue.key,
+            value: keyValue.value,
           });
         })
       )
-      .subscribe(({ keyValue, index }) => {
-        this.dataService.dataMap.set(index, keyValue);
+      .subscribe(({ index, key, value }) => {
+        this.dataService.dataMap.set(index, {
+          key,
+          value,
+          keyValue: `${key}${value}`,
+        });
 
         const totalScore = Array.from(this.dataService.dataMap.values()).reduce(
           (acc, element) => acc + element.value,
@@ -61,20 +64,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.dataService.setSelectedBoxIndex(
           index < this.dataService.boxes.length ? index + 1 : index
         );
-      });
-
-    this.dataService.selectedBoxIndex$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((index) => {
-        if (this.dataService.dataMap.has(index)) {
-          const keyValue = this.dataService.dataMap.get(index);
-          if (keyValue) {
-            this.dataService.setAssignedKey(keyValue.key + keyValue.value);
-          }
-        } else {
-          this.dataService.setAssignedKey(null);
-        }
-        this.cdr.detectChanges();
       });
   }
 

@@ -16,13 +16,13 @@ export class DataService {
   private _selectedkeyValue = new Subject<{ key: string; value: number }>();
   selectedkeyValue$ = this._selectedkeyValue.asObservable();
 
-  private _assignedkey = new Subject<string | null>();
-  assignedkey$ = this._assignedkey.asObservable();
-
   private _totalScore = new BehaviorSubject<number>(0);
   totalScore$ = this._totalScore.asObservable();
 
-  dataMap = new Map<number, { key: string; value: number }>([]);
+  dataMap = new Map<
+    number,
+    { key: string; value: number; keyValue: `${string}${number}` }
+  >([]);
 
   setKeysAreShown(value: boolean): void {
     this._keysAreShown.next(value);
@@ -34,10 +34,6 @@ export class DataService {
 
   setSelectedKeyValue(key: string, value: number): void {
     this._selectedkeyValue.next({ key, value });
-  }
-
-  setAssignedKey(assignedKey: string | null): void {
-    this._assignedkey.next(assignedKey);
   }
 
   setTotalScore(value: number): void {

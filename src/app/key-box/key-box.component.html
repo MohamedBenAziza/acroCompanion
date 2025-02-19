@@ -1,7 +1,10 @@
 <div
   class="key"
   [ngClass]="{
-    selected: (dataService.assignedkey$ | async) === key + value
+    selected:
+      dataService.dataMap.get((dataService.selectedBoxIndex$ | async) ?? -1)
+        ?.keyValue ===
+      key + value
   }"
   [matTooltip]="value | number"
   (click)="handleClick()"
