@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   inject,
   OnDestroy,
@@ -30,7 +29,6 @@ import { mergeMap, of, Subject, takeUntil, withLatestFrom } from "rxjs";
 })
 export class AppComponent implements OnInit, OnDestroy {
   dataService = inject(DataService);
-  cdr = inject(ChangeDetectorRef);
 
   private destroyed$ = new Subject<void>();
 
@@ -48,11 +46,14 @@ export class AppComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(({ index, key, value }) => {
-        this.dataService.dataMap.set(index, {
+        const map = this.dataService.dataMap;
+        map.set(index, {
           key,
           value,
           keyValue: `${key}${value}`,
         });
+
+        this.dataService.setDataMap(map);
 
         const totalScore = Array.from(this.dataService.dataMap.values()).reduce(
           (acc, element) => acc + element.value,
@@ -70,5 +71,10 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  handleDelete(): void {
+    this.dataService.clearDataMap();
+    this.dataService.setTotalScore(0);
   }
 }

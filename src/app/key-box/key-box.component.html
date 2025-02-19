@@ -2,8 +2,9 @@
   class="key"
   [ngClass]="{
     selected:
-      dataService.dataMap.get((dataService.selectedBoxIndex$ | async) ?? -1)
-        ?.keyValue ===
+      (dataService.dataMap$ | async)?.get(
+        (dataService.selectedBoxIndex$ | async) ?? -1
+      )?.keyValue ===
       key + value
   }"
   [matTooltip]="value | number"

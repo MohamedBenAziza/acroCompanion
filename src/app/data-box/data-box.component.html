@@ -13,8 +13,10 @@
     </div>
   </div>
   <div class="content">
-    @if (dataService.dataMap.get(num)?.key) {
-    <span class="content__value">{{ dataService.dataMap.get(num)?.key }}</span>
+    @if ((dataService.dataMap$ | async )?.get(num)?.key) {
+    <span class="content__value">{{
+      (dataService.dataMap$ | async)?.get(num)?.key
+    }}</span>
     } @else {
     <span>select element</span>
     }
@@ -23,7 +25,7 @@
     <div></div>
     <div class="bottom__score">
       <span>
-        {{ dataService.dataMap.get(num)?.value }}
+        {{ (dataService.dataMap$ | async)?.get(num)?.value }}
       </span>
     </div>
     <div></div>

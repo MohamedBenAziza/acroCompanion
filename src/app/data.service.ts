@@ -19,10 +19,18 @@ export class DataService {
   private _totalScore = new BehaviorSubject<number>(0);
   totalScore$ = this._totalScore.asObservable();
 
-  dataMap = new Map<
-    number,
-    { key: string; value: number; keyValue: `${string}${number}` }
-  >([]);
+  private _dataMap = new BehaviorSubject(
+    new Map<
+      number,
+      { key: string; value: number; keyValue: `${string}${number}` }
+    >([])
+  );
+
+  dataMap$ = this._dataMap.asObservable();
+
+  get dataMap() {
+    return this._dataMap.value;
+  }
 
   setKeysAreShown(value: boolean): void {
     this._keysAreShown.next(value);
@@ -38,5 +46,18 @@ export class DataService {
 
   setTotalScore(value: number): void {
     this._totalScore.next(value);
+  }
+
+  setDataMap(
+    newMap: Map<
+      number,
+      { key: string; value: number; keyValue: `${string}${number}` }
+    >
+  ) {
+    this._dataMap.next(newMap);
+  }
+
+  clearDataMap() {
+    this.setDataMap(new Map());
   }
 }

@@ -4,7 +4,11 @@
     <data-box [num]="item"></data-box>
     }
     <div class="result-container">
-      <button mat-stroked-button aria-label="delete button">
+      <button
+        mat-stroked-button
+        aria-label="delete button"
+        (click)="handleDelete()"
+      >
         <mat-icon>delete</mat-icon>
       </button>
       <span>Total value: {{ dataService.totalScore$ | async }}</span>
