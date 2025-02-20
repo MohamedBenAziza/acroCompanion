@@ -10,6 +10,10 @@ export class DataService {
   private _keysAreShown = new BehaviorSubject<boolean>(false);
   keysAreShown$ = this._keysAreShown.asObservable();
 
+  get keysAreShown() {
+    return this._keysAreShown.value;
+  }
+
   private _selectedBoxIndex = new Subject<number>();
   selectedBoxIndex$ = this._selectedBoxIndex.asObservable();
 
@@ -59,5 +63,9 @@ export class DataService {
 
   clearDataMap() {
     this.setDataMap(new Map());
+  }
+
+  setStorageData(key: string, value: string): void {
+    localStorage.setItem(key, value);
   }
 }

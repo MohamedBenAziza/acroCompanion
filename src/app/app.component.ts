@@ -11,7 +11,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { DataService } from "./data.service";
 import { CommonModule } from "@angular/common";
 import { KeyBlocComponent } from "./key-bloc/key-bloc.component";
-import { mergeMap, of, Subject, takeUntil, withLatestFrom } from "rxjs";
+import { delay, mergeMap, of, Subject, takeUntil, withLatestFrom } from "rxjs";
+import { storageEnum } from "./enum";
 
 @Component({
   selector: "app-root",
@@ -55,17 +56,57 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.dataService.setDataMap(map);
 
+        this.dataService.setStorageData(
+          storageEnum.dataMap,
+          JSON.stringify(Array.from(map.entries()))
+        );
+
         const totalScore = Array.from(this.dataService.dataMap.values()).reduce(
           (acc, element) => acc + element.value,
           0
         );
 
-        this.dataService.setTotalScore(parseFloat(totalScore.toFixed(2)));
+        const formattedTotalScore = parseFloat(totalScore.toFixed(2));
+
+        this.dataService.setTotalScore(formattedTotalScore);
+
+        this.dataService.setStorageData(
+          storageEnum.totalScore,
+          formattedTotalScore.toString()
+        );
 
         this.dataService.setSelectedBoxIndex(
           index < this.dataService.boxes.length ? index + 1 : index
         );
       });
+
+    this.dataService.keysAreShown$
+      .pipe(
+        takeUntil(this.destroyed$),
+        withLatestFrom(this.dataService.selectedBoxIndex$),
+        mergeMap(([_, selectedBoxIndex]) => {
+          return of(selectedBoxIndex);
+        }),
+        // Shifts Execution to the Next Microtask (Async Behavior)
+        delay(0)
+      )
+      .subscribe((selectedBoxIndex) => {
+        this.dataService.setSelectedBoxIndex(selectedBoxIndex);
+      });
+
+    const storedMap = localStorage.getItem(storageEnum.dataMap);
+    if (storedMap) {
+      const myMap = new Map<
+        number,
+        { key: string; value: number; keyValue: `${string}${number}` }
+      >(JSON.parse(storedMap));
+      this.dataService.setDataMap(myMap);
+    }
+
+    const storedTotalScore = localStorage.getItem(storageEnum.totalScore);
+    if (storedTotalScore) {
+      this.dataService.setTotalScore(parseFloat(storedTotalScore));
+    }
   }
 
   ngOnDestroy(): void {
