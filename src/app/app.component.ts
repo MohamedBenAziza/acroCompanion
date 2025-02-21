@@ -11,7 +11,15 @@ import { MatButtonModule } from "@angular/material/button";
 import { DataService } from "./data.service";
 import { CommonModule } from "@angular/common";
 import { KeyBlocComponent } from "./key-bloc/key-bloc.component";
-import { delay, mergeMap, of, Subject, takeUntil, withLatestFrom } from "rxjs";
+import {
+  delay,
+  map,
+  mergeMap,
+  of,
+  Subject,
+  takeUntil,
+  withLatestFrom,
+} from "rxjs";
 import { storageEnum } from "./enum";
 
 @Component({
@@ -38,12 +46,12 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroyed$),
         withLatestFrom(this.dataService.selectedBoxIndex$),
-        mergeMap(([keyValue, selectedBoxIndex]) => {
-          return of({
+        map(([keyValue, selectedBoxIndex]) => {
+          return {
             index: selectedBoxIndex,
             key: keyValue.key,
             value: keyValue.value,
-          });
+          };
         })
       )
       .subscribe(({ index, key, value }) => {
@@ -84,9 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroyed$),
         withLatestFrom(this.dataService.selectedBoxIndex$),
-        mergeMap(([_, selectedBoxIndex]) => {
-          return of(selectedBoxIndex);
-        }),
+        map(([_, selectedBoxIndex]) => selectedBoxIndex),
         // Shifts Execution to the Next Microtask (Async Behavior)
         delay(0)
       )
