@@ -11,15 +11,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { DataService } from "./data.service";
 import { CommonModule } from "@angular/common";
 import { KeyBlocComponent } from "./key-bloc/key-bloc.component";
-import {
-  delay,
-  map,
-  mergeMap,
-  of,
-  Subject,
-  takeUntil,
-  withLatestFrom,
-} from "rxjs";
+import { delay, map, Subject, takeUntil, withLatestFrom } from "rxjs";
 import { storageEnum } from "./enum";
 
 @Component({
@@ -69,18 +61,8 @@ export class AppComponent implements OnInit, OnDestroy {
           JSON.stringify(Array.from(map.entries()))
         );
 
-        const totalScore = Array.from(this.dataService.dataMap.values()).reduce(
-          (acc, element) => acc + element.value,
-          0
-        );
-
-        const formattedTotalScore = parseFloat(totalScore.toFixed(2));
-
-        this.dataService.setTotalScore(formattedTotalScore);
-
-        this.dataService.setStorageData(
-          storageEnum.totalScore,
-          formattedTotalScore.toString()
+        this.dataService.setTotalScore(
+          this.getTotalScore(this.dataService.dataMap)
         );
 
         this.dataService.setSelectedBoxIndex(
@@ -107,17 +89,28 @@ export class AppComponent implements OnInit, OnDestroy {
         { key: string; value: number; keyValue: `${string}${number}` }
       >(JSON.parse(storedMap));
       this.dataService.setDataMap(myMap);
-    }
 
-    const storedTotalScore = localStorage.getItem(storageEnum.totalScore);
-    if (storedTotalScore) {
-      this.dataService.setTotalScore(parseFloat(storedTotalScore));
+      this.dataService.setTotalScore(this.getTotalScore(myMap));
     }
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  getTotalScore(
+    map: Map<
+      number,
+      { key: string; value: number; keyValue: `${string}${number}` }
+    >
+  ): number {
+    const totalScore = Array.from(map.values()).reduce(
+      (acc, element) => acc + element.value,
+      0
+    );
+
+    return parseFloat(totalScore.toFixed(2));
   }
 
   handleDelete(): void {
