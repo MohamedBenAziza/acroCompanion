@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Subject } from "rxjs";
+import { BehaviorSubject, map, Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -20,9 +20,6 @@ export class DataService {
   private _selectedkeyValue = new Subject<{ key: string; value: number }>();
   selectedkeyValue$ = this._selectedkeyValue.asObservable();
 
-  private _totalScore = new BehaviorSubject<number>(0);
-  totalScore$ = this._totalScore.asObservable();
-
   private _dataMap = new BehaviorSubject(
     new Map<
       number,
@@ -36,6 +33,17 @@ export class DataService {
     return this._dataMap.value;
   }
 
+  totalScore$ = this.dataMap$.pipe(
+    map((dataMap) => {
+      const totalScore = Array.from(dataMap.values()).reduce(
+        (acc, element) => acc + element.value,
+        0
+      );
+
+      return parseFloat(totalScore.toFixed(2));
+    })
+  );
+
   setKeysAreShown(value: boolean): void {
     this._keysAreShown.next(value);
   }
@@ -46,10 +54,6 @@ export class DataService {
 
   setSelectedKeyValue(key: string, value: number): void {
     this._selectedkeyValue.next({ key, value });
-  }
-
-  setTotalScore(value: number): void {
-    this._totalScore.next(value);
   }
 
   setDataMap(

@@ -61,10 +61,6 @@ export class AppComponent implements OnInit, OnDestroy {
           JSON.stringify(Array.from(map.entries()))
         );
 
-        this.dataService.setTotalScore(
-          this.getTotalScore(this.dataService.dataMap)
-        );
-
         this.dataService.setSelectedBoxIndex(
           index < this.dataService.boxes.length ? index + 1 : index
         );
@@ -89,8 +85,6 @@ export class AppComponent implements OnInit, OnDestroy {
         { key: string; value: number; keyValue: `${string}${number}` }
       >(JSON.parse(storedMap));
       this.dataService.setDataMap(myMap);
-
-      this.dataService.setTotalScore(this.getTotalScore(myMap));
     }
   }
 
@@ -99,22 +93,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  getTotalScore(
-    map: Map<
-      number,
-      { key: string; value: number; keyValue: `${string}${number}` }
-    >
-  ): number {
-    const totalScore = Array.from(map.values()).reduce(
-      (acc, element) => acc + element.value,
-      0
-    );
-
-    return parseFloat(totalScore.toFixed(2));
-  }
-
   handleDelete(): void {
     this.dataService.clearDataMap();
-    this.dataService.setTotalScore(0);
   }
 }
