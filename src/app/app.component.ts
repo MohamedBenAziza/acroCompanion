@@ -95,5 +95,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   handleDelete(): void {
     this.dataService.clearDataMap();
+    this.dataService.clearStorageData();
   }
 }

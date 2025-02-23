@@ -72,4 +72,8 @@ export class DataService {
   setStorageData(key: string, value: string): void {
     localStorage.setItem(key, value);
   }
+
+  clearStorageData(): void {
+    localStorage.clear();
+  }
 }
