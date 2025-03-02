@@ -1,15 +1,14 @@
 <div
   class="key"
-  [ngClass]="{
-    selected:
-      (dataService.dataMap$ | async)?.get(
-        (dataService.selectedBoxIndex$ | async) ?? -1
-      )?.keyValue ===
-      key + value
-  }"
+  [class.selected]="
+    (dataService.dataMap$ | async)?.get(
+      (dataService.selectedBoxIndex$ | async) ?? -1
+    )?.keyValue ===
+    key + value
+  "
   [matTooltip]="value | number"
-  (click)="handleClick()"
-  (keydown.enter)="handleClick()"
+  (click)="handleClick.emit({ key: key, value: value })"
+  (keydown.enter)="handleClick.emit({ key: key, value: value })"
   tabindex="0"
 >
   <span>

@@ -1,6 +1,6 @@
 <div
   class="container"
-  [ngClass]="{ selected: (dataService.selectedBoxIndex$ | async) === num }"
+  [class.selected]="(dataService.selectedBoxIndex$ | async) === num"
   (click)="handleClick()"
   (keydown.enter)="handleClick()"
   tabindex="0"

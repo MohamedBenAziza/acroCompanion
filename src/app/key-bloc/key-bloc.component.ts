@@ -1,5 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+} from "@angular/core";
 import { KeyBoxComponent } from "../key-box/key-box.component";
+import { DataService } from "../data.service";
 
 @Component({
   selector: "key-bloc",
@@ -12,4 +18,10 @@ import { KeyBoxComponent } from "../key-box/key-box.component";
 export class KeyBlocComponent {
   @Input() title!: string;
   @Input() keysValues: [string, number][] = [];
+
+  dataService = inject(DataService);
+
+  handleClick(event: { key: string; value: number }): void {
+    this.dataService.setSelectedKeyValue(event.key, event.value);
+  }
 }

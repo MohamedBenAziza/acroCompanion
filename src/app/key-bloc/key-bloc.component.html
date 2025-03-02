@@ -2,7 +2,11 @@
   <span>{{ title }}</span>
   <div class="keys-container">
     @for (item of keysValues; track $index) {
-    <key-box [key]="item[0]" [value]="item[1]"></key-box>
+    <key-box
+      [key]="item[0]"
+      [value]="item[1]"
+      (handleClick)="handleClick($event)"
+    ></key-box>
     }
   </div>
 </div>

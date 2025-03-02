@@ -1,8 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   inject,
   Input,
+  Output,
 } from "@angular/core";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { DataService } from "../data.service";
@@ -20,9 +22,7 @@ export class KeyBoxComponent {
   @Input() key!: string;
   @Input() value!: number;
 
-  dataService = inject(DataService);
+  @Output() handleClick = new EventEmitter<{ key: string; value: number }>();
 
-  handleClick(): void {
-    this.dataService.setSelectedKeyValue(this.key, this.value);
-  }
+  dataService = inject(DataService);
 }
