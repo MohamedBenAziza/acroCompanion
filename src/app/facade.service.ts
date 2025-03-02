@@ -16,6 +16,9 @@ export class FacadeService implements OnDestroy {
     this.destroyed$.complete();
   }
 
+  /**
+   * Subscribes to the selectedkeyValue$ observable and updates the dataMap with the new key-value pair.
+   */
   setupKeyValueSubscription(): void {
     this.dataService.selectedkeyValue$
       .pipe(
@@ -50,6 +53,9 @@ export class FacadeService implements OnDestroy {
       });
   }
 
+  /**
+   * Subscribes to the keysAreShown$ observable and updates the selectedBoxIndex.
+   */
   setupKeysShownSubscription(): void {
     this.dataService.keysAreShown$
       .pipe(
@@ -64,6 +70,9 @@ export class FacadeService implements OnDestroy {
       });
   }
 
+  /**
+   * Restores the dataMap from the local storage.
+   */
   restoreDataMapFromStorage(): void {
     const storedMap = localStorage.getItem(storageEnum.dataMap);
     if (storedMap) {
